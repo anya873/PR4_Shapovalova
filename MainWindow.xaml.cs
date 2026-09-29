@@ -20,9 +20,12 @@ namespace Chess_Shapovalova
     /// </summary>
     public partial class MainWindow : Window
     {
+        public List<Pawn> Pawns = new List<Pawn>();
+        public static MainWindow init;
         public MainWindow()
         {
             InitializeComponent();
+            init = this;
         }
     }
 }
