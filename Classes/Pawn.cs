@@ -26,11 +26,11 @@ namespace Chess_Shapovalova.Classes
         public virtual string ImageName => Black ? "Pawn (black).png" : "Pawn.png";
         public virtual void SelectFigure(object sender, MouseButtonEventArgs e)
         {
-            if (MainWindow.mainWindow.WhiteTurn == Black)
+            Pawn SelectPawn = MainWindow.mainWindow.Pawns.Find(p => p.Select == true);
+            if (SelectPawn == null && MainWindow.mainWindow.WhiteTurn == Black)
                 return;
 
             bool attack = false;
-            Pawn SelectPawn = MainWindow.mainWindow.Pawns.Find(p => p.Select == true);
 
             if (SelectPawn != null && SelectPawn != this && SelectPawn.Black != this.Black)
             {
@@ -46,6 +46,10 @@ namespace Chess_Shapovalova.Classes
                     MainWindow.mainWindow.ClearHighlights();
 
                     MainWindow.mainWindow.WhiteTurn = !MainWindow.mainWindow.WhiteTurn;
+                    MainWindow.mainWindow.UpdateTurnLabel();
+
+                    if (MainWindow.mainWindow.WhiteTurn)
+                        MainWindow.mainWindow.WhiteAIMove();
 
                     attack = true;
                 }
@@ -71,6 +75,7 @@ namespace Chess_Shapovalova.Classes
                 }
             }
         }
+
 
         public void Transform(int X, int Y)
         {
@@ -100,7 +105,7 @@ namespace Chess_Shapovalova.Classes
         public virtual List<(int, int)> GetPossibleMoves()
         {
             var moves = new List<(int, int)>();
-            int dir = Black ? -1 : 1;
+            int dir = Black ? 1 : -1;
 
             int ny = Y + dir;
             if (ny >= 0 && ny < 8 && MainWindow.mainWindow.GetPawnAt(X, ny) == null)

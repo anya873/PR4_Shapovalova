@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Chess_Shapovalova.Classes;
+using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
@@ -76,6 +77,8 @@ namespace Chess_Shapovalova
 
                 WhiteTurn = !WhiteTurn;
                 UpdateTurnLabel();
+
+                if (WhiteTurn) WhiteAIMoveWithDelay();
             }
         }
         public void UpdateTurnLabel()
@@ -131,6 +134,49 @@ namespace Chess_Shapovalova
                 else if (target.Black != piece.Black)
                     cell.Background = new SolidColorBrush(Colors.LightCoral);
             }
+        }
+
+        public void WhiteAIMove()
+        {
+            if (!WhiteTurn) return;
+
+            List<(Pawn piece, int x, int y)> allMoves = new List<(Pawn, int, int)>();
+
+            foreach (Pawn piece in Pawns)
+            {
+                if (piece.Black) continue;
+                if (piece.Figure == null) continue;
+
+                foreach (var (mx, my) in piece.GetPossibleMoves())
+                {
+                    allMoves.Add((piece, mx, my));
+                }
+            }
+
+            if (allMoves.Count == 0) return;
+
+            Random rnd = new Random();
+            var move = allMoves[rnd.Next(allMoves.Count)];
+
+            Pawn target = GetPawnAt(move.x, move.y);
+            if (target != null && target.Black)
+            {
+                gameBoard.Children.Remove(target.Figure);
+                Pawns.Remove(target);
+            }
+
+            Grid.SetColumn(move.piece.Figure, move.x);
+            Grid.SetRow(move.piece.Figure, move.y);
+            move.piece.X = move.x;
+            move.piece.Y = move.y;
+
+            WhiteTurn = false;
+            UpdateTurnLabel();
+        }
+        private async void WhiteAIMoveWithDelay()
+        {
+            await System.Threading.Tasks.Task.Delay(500);
+            WhiteAIMove();
         }
     }
 }
