@@ -1,56 +1,46 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Controls;
-using System.Windows.Input;
 
 namespace Chess_Shapovalova.Classes
 {
-    public class Queen:Pawn
+    public class Queen : Pawn
     {
-         public Queen(int x, int y, bool black) : base(x, y, black) { }
+        public Queen(int x, int y, bool black) : base(x, y, black) { }
+
         public override string ImageName => Black ? "black-queen.png" : "white-queen.png";
-        public override void SelectFigure(object sender, MouseButtonEventArgs e)
+
+        public override List<(int, int)> GetPossibleMoves()
         {
-            bool moved = false;
-            Pawn selected = MainWindow.mainWindow.Pawns.Find(p => p.Select == true);
-            if (selected != null && selected!=this && selected.Black != this.Black)
+            var moves = new List<(int, int)>();
+            int[] dx = { 1, -1, 0, 0, 1, 1, -1, -1 };
+            int[] dy = { 0, 0, 1, -1, 1, -1, 1, -1 };
+
+            for (int i = 0; i < 8; i++)
             {
-                if(CanMoveTo(selected.X, selected.Y, selected))
+                int nx = X + dx[i];
+                int ny = Y + dy[i];
+
+                while (nx >= 0 && nx < 8 && ny >= 0 && ny < 8)
                 {
-                    MainWindow.mainWindow.gameBoard.Children.Remove(this.Figure);
-                    Grid.SetColumn(selected.Figure, this.X);
-                    Grid.SetRow(selected.Figure, this.Y);
-                    selected.X = this.X;
-                    selected.Y = this.Y;
-                    selected.Deselect();
-                    moved = true;
+                    Pawn target = MainWindow.mainWindow.GetPawnAt(nx, ny);
+
+                    if (target == null)
+                    {
+                        moves.Add((nx, ny));
+                    }
+                    else
+                    {
+                        if (target.Black != Black)
+                            moves.Add((nx, ny));
+                        break;
+                    }
+
+                    nx += dx[i];
+                    ny += dy[i];
                 }
             }
-            if (!moved)
-            {
-                base.SelectFigure(sender, e);
-            }
-        }
-        public bool CanMoveTo(int fromX, int fromY, Pawn attacker)
-        {
-            bool sameRow = fromY == this.Y;
-            bool sameCol = fromX == this.X;
-            bool sameDiag = Math.Abs(fromX-this.X)==Math.Abs(fromY-this.Y);
-            if (!sameRow && !sameCol && !sameDiag) return false;
-            int dx = Math.Sign(this.X - fromX);
-            int dy = Math.Sign(this.Y - fromY);
-            int x = fromX + dx;
-            int y = fromY + dy;
-            while(x!=this.X || y!=this.Y)
-            {
-                if(MainWindow.mainWindow.GetPawnAt(x, y) != null) return false;
-                x += dx;
-                y += dy;
-            }
-            return true;
+            return moves;
         }
     }
 }
