@@ -12,6 +12,7 @@ namespace Chess_Shapovalova
     {
         public List<Classes.Pawn> Pawns = new List<Classes.Pawn>();
         public static MainWindow mainWindow;
+        public bool WhiteTurn = true;
 
         public MainWindow()
         {
@@ -72,7 +73,14 @@ namespace Chess_Shapovalova
                 selected.Y = y;
                 selected.Deselect();
                 ClearHighlights();
+
+                WhiteTurn = !WhiteTurn;
+                UpdateTurnLabel();
             }
+        }
+        public void UpdateTurnLabel()
+        {
+            turnLabel.Content = WhiteTurn ? "Ход белых" : "Ход чёрных";
         }
 
         public Classes.Pawn GetPawnAt(int x, int y)

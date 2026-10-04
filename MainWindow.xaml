@@ -102,6 +102,8 @@
             <Grid Background="#FF9A6400" Width="50" Height="50" Grid.Column="4" Grid.Row="7" MouseDown="SelectTile"/>
             <Grid Background="#FF9A6400" Width="50" Height="50" Grid.Column="6" Grid.Row="7" MouseDown="SelectTile"/>
         </Grid>
+        <Label x:Name="turnLabel" Content="Ход белых" FontSize="18"
+       HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,20,0,0"/>
 
 
     </Grid>

@@ -26,6 +26,9 @@ namespace Chess_Shapovalova.Classes
         public virtual string ImageName => Black ? "Pawn (black).png" : "Pawn.png";
         public virtual void SelectFigure(object sender, MouseButtonEventArgs e)
         {
+            if (MainWindow.mainWindow.WhiteTurn == Black)
+                return;
+
             bool attack = false;
             Pawn SelectPawn = MainWindow.mainWindow.Pawns.Find(p => p.Select == true);
 
@@ -41,6 +44,9 @@ namespace Chess_Shapovalova.Classes
                     SelectPawn.Y = this.Y;
                     SelectPawn.Deselect();
                     MainWindow.mainWindow.ClearHighlights();
+
+                    MainWindow.mainWindow.WhiteTurn = !MainWindow.mainWindow.WhiteTurn;
+
                     attack = true;
                 }
             }
