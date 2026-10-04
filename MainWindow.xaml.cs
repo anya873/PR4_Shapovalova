@@ -22,6 +22,7 @@ namespace Chess_Shapovalova
     {
         public List<Classes.Pawn> Pawns = new List<Classes.Pawn>();
         public static MainWindow mainWindow;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -45,6 +46,10 @@ namespace Chess_Shapovalova
             Pawns.Add(new Classes.Pawn(6, 6, true));
             Pawns.Add(new Classes.Pawn(7, 6, true));
 
+            Pawns.Add(new Classes.Queen(3, 7, false));
+            Pawns.Add(new Classes.Queen(4, 7, false));
+            Pawns.Add(new Classes.Queen(3, 0, true));
+
             CreateFigure();
         }
 
@@ -58,9 +63,9 @@ namespace Chess_Shapovalova
                     Height =50,
                 };
                 if (Pawn.Black)
-                    Pawn.Figure.Background = new ImageBrush(new BitmapCache(new Uri(@"pack://application:,,,/Images/Pawn (black).png")));
+                    Pawn.Figure.Background = new ImageBrush(new BitmapImage(new Uri(@"pack://application:,,,/Images/Pawn (black).png")));
                 else
-                    Pawn.Figure.Background = new ImageBrush(new BitmapCache(new Uri(@"pack://application:,,,/Images/Pawn.png")));
+                    Pawn.Figure.Background = new ImageBrush(new BitmapImage(new Uri(@"pack://application:,,,/Images/Pawn.png")));
 
                 Grid.SetColumn(Pawn.Figure, Pawn.X);
                 Grid.SetRow(Pawn.Figure, Pawn.Y);
@@ -80,6 +85,11 @@ namespace Chess_Shapovalova
         public void SelectTile(object sender, MouseButtonEventArgs e)
         {
             Grid Tile = sender as Grid;
+        }
+
+        public Classes.Pawn GetPawnAt(int x, int y)
+        {
+            return Pawns.Find(p=>p.X==x && p.Y == y);
         }
     }
 }

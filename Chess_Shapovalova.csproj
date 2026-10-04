@@ -64,6 +64,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Classes\Pawn.cs" />
+    <Compile Include="Classes\Queen.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -104,6 +105,11 @@
   <ItemGroup>
     <Resource Include="Images\Pawn.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Images\black-queen.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\white-queen.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

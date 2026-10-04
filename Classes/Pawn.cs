@@ -23,10 +23,11 @@ namespace Chess_Shapovalova.Classes
             this.Y = Y;
             this.Black = Black;
         }
-        public void SelectFigure(object sender, MouseButtonEventArgs e)
+        public virtual string ImageName => Black ? "Pawn (black).png" : "Pawn.png";
+        public virtual void SelectFigure(object sender, MouseButtonEventArgs e)
         {
             bool atack = false;
-            Pawn SelectPawn = MainWindow.mainWindow.Pawns.Find(X=> X.Select == true);
+            Pawn SelectPawn = MainWindow.mainWindow.Pawns.Find(p=> p.Select == true);
             if(SelectPawn != null)
             {
                 if(this.Black && this.Y-1 == SelectPawn.Y && (this.X-1 == SelectPawn.X || this.X == SelectPawn.X || this.X+1 == SelectPawn.X) ||
@@ -74,6 +75,13 @@ namespace Chess_Shapovalova.Classes
                 this.Y = Y;
             }
             SelectFigure(null, null);
+        }
+
+        public void Deselect()
+        {
+            Select = false;
+            if (Black) Figure.Background = new ImageBrush(new BitmapImage(new Uri(@"pack://application:,,,/Images/Pawn (black).png")));
+            else Figure.Background = new ImageBrush(new BitmapImage(new Uri(@"pack://application:,,,/Images/Pawn.png")));
         }
     }
 }
